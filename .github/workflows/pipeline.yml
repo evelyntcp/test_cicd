@@ -1,0 +1,68 @@
+name: cicd-pipeline
+
+on:
+  pull_request:
+      branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  clone_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.10
+          
+      - name: Git clone
+        run: |
+          git clone # url from webhook payload
+          cd learner_code
+          python sprint1.py
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  # from student
+
+      - name: Run student notebook (Sprint 1)
+        if: ${{ env.SPRINT == '1' }}
+        run: |
+          if ! jupyter nbconvert --execute eda.ipynb; then
+            echo "EDA notebook execution failed"
+            python fail.py
+            exit 1
+          fi
+          echo "Successfully executed."
+      
+      - name: Run student python file (Sprint 2 or 3)
+        if: ${{ env.SPRINT == '2' || env.SPRINT == '3'}}
+        run: |
+          if ! python main.py; then
+            echo "Main.py execution failed"
+            python fail.py
+            exit 1
+          fi
+          echo "Successfully executed."
+
+  code_evaluation:
+    container:
+      image: ... # from Azure container repo, need creds also
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+            
+      - name: Run EDA eval
+        run: |
+          python sprint${{env.SPRINT}}.py
+      - name: Send email
+        run: |
+        
+
