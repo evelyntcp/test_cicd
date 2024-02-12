@@ -4,14 +4,21 @@ Contains test ci/cd yml file, as well as ideal folder structure with some templa
 
 Test project: Chatbot
 
-Framework: Langchain
+Framework: 
+- Langchain
 
-Model: Mistral7b, from huggingface (best to get one that is already quantized)
+Model: 
+- Mistral7b, from huggingface (best to get one that is already quantized)
 
-Backend: FastAPI or Ollama for endpoint, pgvector db (for RAG and memory purposes)
+Backend: 
+- FastAPI or Ollama for endpoint
+- pgvector db (for RAG and memory purposes)
 
-Frontend: Streamlit or chainlit
+Frontend: 
+- Streamlit or chainlit
 
-Other future features: RAG
+Other future features: 
+- RAG
 
-Deployment: docker (don't need Celery and Rabbitmq for now)
+Deployment: 
+- docker (don't need Celery and Rabbitmq for now)
